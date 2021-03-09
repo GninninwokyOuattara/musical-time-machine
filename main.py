@@ -19,6 +19,9 @@ headers = {
 
 
 
+# Input Playlist Name
+playlist_name = input("Name of the playlist : ")
+
 # Scrapping
 print("Scrapping songs...")
 url = "https://www.billboard.com/charts/hot-100/2021-02-20"
@@ -55,17 +58,16 @@ for song in songs_list:
 
 print("Creating Playlist...")
 # # Create a Playlist 
-response = requests.post(url=f"https://api.spotify.com/v1/users/{SPOTIFY_USER_ID}/playlists", json={"name":"2021-02-20"},headers=headers)
+response = requests.post(url=f"https://api.spotify.com/v1/users/{SPOTIFY_USER_ID}/playlists", json={"name":{playlist_name}},headers=headers)
 playlist_data = response.json()
 playlist_id = playlist_data["id"]
 
 
 # Add songs into the playlist
 print("Adding songs into the Playlist...") 
-response = requests.post(url="https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=headers,json={ "uris":tracks_uri})
+response = requests.post(url=f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks", headers=headers, json={ "uris":tracks_uri})
 response = response.json()
 print(response)
-snapshot_id = response["snapshot_id"]
 
 
-print(f"Link to play : http://open.spotify.com/user/{SPOTIFY_USER_ID}/playlists/{snapshot_id}")
+print(f"Link to play : http://open.spotify.com/user/{SPOTIFY_USER_ID}/playlists/{playlist_id}")
